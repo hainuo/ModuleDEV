@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Module Develop</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <style type="text/css">
+        html, body {
+            height: 100%
+        }
+
+        body {
+            background-color: #fff;
+            margin: 0;
+        }
+
+        #wrap {
+            height: 100%;
+            position: relative;
+        }
+
+        #header {
+            background-color: #5082c2;
+            height: 44px;
+            position: relative;
+        }
+
+        #header h1 {
+            font-size: 20px;
+            height: 44px;
+            line-height: 44px;
+            margin: 0em;
+            color: #fff;
+            margin-left: 100px;
+            margin-right: 100px;
+            text-align: center;
+        }
+
+        #main {
+            display: block;
+            height: 50%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border: 1px solid red;
+        }
+
+        a.button {
+            display: -webkit-box;
+            -webkit-box-pack: center;
+            -webkit-box-align: center;
+            height: 36px;
+            margin: 8px;
+            background-color: rgba(240, 240, 240, 1.0);
+            border-color: rgba(220, 220, 220, 1.0);
+            border-width: 2px;
+            border-style: solid;
+        }
+
+        a.active {
+            background-color: rgba(240, 240, 240, 0.6);
+        }
+    </style>
+</head>
+<body>
+<div id="wrap">
+    <header id="header">
+        <h1 id="title">下载</h1>
+    </header>
+    <div id="main">
+        <a class="button" tapmode="active" onclick="openVideoList()">视频列表</a>
+        <a class="button" tapmode="active" onclick="playUrl()">播放</a>
+        <a class="button" tapmode="active" id="d1" onclick="downloadUrl(1)">下载d1</a>
+        <a class="button" tapmode="active" id="d2" onclick="downloadUrl(2)">下载d2</a>
+        <a class="button" tapmode="active" id="d3" onclick="downloadUrl(3)">下载d3</a>
+        <a class="button" tapmode="active" id="d4" onclick="downloadUrl(4)">下载d4</a>
+        <a class="button" tapmode="active" id="d5" onclick="downloadUrl(5)">下载d5</a>
+        <a class="button" tapmode="active" id="d6" onclick="downloadUrl(6)">下载d6</a>
+        <a class="button" tapmode="active" id="d7" onclick="downloadUrl(7)">下载d7</a>
+        <a class="button" tapmode="active" id="d8" onclick="downloadUrl(8)">下载d8</a>
+        <a class="button" tapmode="active" id="d9" onclick="downloadUrl(9)">下载d9</a>
+        <a class="button" tapmode="active" id="d10" onclick="downloadUrl(10)">下载d10</a>
+        <a class="button" tapmode="active" id="d11" onclick="downloadUrl(11)">下载d11</a>
+        <a class="button" tapmode="active" id="d12" onclick="downloadUrl(12)">下载d12</a>
+        <a class="button" tapmode="active" id="d13" onclick="downloadUrl(13)">下载d13</a>
+        <a class="button" tapmode="active" id="d14" onclick="downloadUrl(14)">下载d14</a>
+        <a class="button" tapmode="active" id="d15" onclick="downloadUrl(15)">下载d15</a>
+        <a class="button" tapmode="active" id="d16" onclick="downloadUrl(16)">下载d16</a>
+        <a class="button" tapmode="active" id="d17" onclick="downloadUrl(17)">下载d17</a>
+        <a class="button" tapmode="active" id="d18" onclick="downloadUrl(18)">下载d18</a>
+        <a class="button" tapmode="active" id="d19" onclick="downloadUrl(19)">下载mp4</a>
+
+    </div>
+</div>
+</body>
+<script>
+    var m3u8Array = {
+        1: "https://v5.szjal.cn/20201028/M5eAhwDB/index.m3u8",
+        2: "https://v5.szjal.cn/20201028/wfdGI9kz/index.m3u8",
+        3: "https://v5.szjal.cn/20201028/2hu67rLH/index.m3u8",
+        4: "https://v5.szjal.cn/20201028/iaOLnskA/index.m3u8",
+        5: "https://v5.szjal.cn/20201028/PPmLq6VO/index.m3u8",
+        6: "https://v5.szjal.cn/20201101/KxceV58t/index.m3u8",
+        7: "https://v5.szjal.cn/20201104/EV9o3qqI/index.m3u8",
+        8: "https://v5.szjal.cn/20201231/n3yUUhbg/index.m3u8",
+        9: "https://v5.szjal.cn/20201231/fqOZNhQm/index.m3u8",
+        10: "https://v5.szjal.cn/20201231/XEEdNfBl/index.m3u8",
+        11: "https://v5.szjal.cn/20201231/UhD99jwm/index.m3u8",
+        12: "https://v5.szjal.cn/20201231/tX8cuLfP/index.m3u8",
+        13: "https://v5.szjal.cn/20201231/91qDi5Xu/index.m3u8",
+        14: "https://v5.szjal.cn/20201231/QspEoj5o/index.m3u8",
+        15: "https://v5.szjal.cn/20201231/1E5uCd02/index.m3u8",
+        16: "https://v5.szjal.cn/20201231/uL5cY2Gx/index.m3u8",
+        17: "https://v5.szjal.cn/20201231/QUmlKgOa/index.m3u8",
+        18: "https://v5.szjal.cn/20201231/0vxmXJwD/index.m3u8",
+        19: "https://xy2.v.netease.com/2020/dhp/e4.mp4"
+    };
+
+    function openVideoList() {
+        let demo = api.require('hnMediaPlayer');
+        var status = demo.stop();
+        // alert(JSON.stringify(status));
+        api.openTabLayout({
+            name: 'videolist',
+            url: 'widget://videolist.html',
+            title: '视频列表',
+            hideNavigationBar: false
+        });
+    }
+
+    function downloadUrl(i) {
+
+        var url = m3u8Array[i];
+        if (!url) {
+            alert("url没找到");
+            return;
+        }
+        api.toast({
+            msg: "播放缓存url \r" + url
+        })
+        let demo = api.require('hnMediaPlayer');
+        var ret = demo.download({
+            url: url,
+            vod_id: i,
+            vod_name: "撒旦xxxx" + i,
+            vod_pic: 'http://puui.qpic.cn/vcover_vt_pic/0/mzc00200dahoxr41615969220999/0',
+            key: "第" + i + "集",
+            sort: i
+        })
+        alert(JSON.stringify(ret));
+        // var height = (api.winWidth * 9) / 16;
+        // var rect = {
+        //     x:0,
+        //     y:api.winHeight - height -10,
+        //     width:api.winWidth,
+        //     height: height
+        // };
+        // demo.play({
+        //     url:url,
+        //     rect:rect
+        // },function(ret,err){
+        //     console.log(JSON.stringify(ret));
+        // })
+    }
+
+    function playUrl() {
+        api.prompt({
+            buttons: ['确定', '取消']
+        }, function (ret, err) {
+            var index = ret.buttonIndex;
+            var text = ret.text;
+            if (m3u8Array[text] && index == 1) {
+                // alert(m3u8Array[text]);
+                let demo = api.require('hnMediaPlayer');
+                var height = (api.winWidth * 9) / 16;
+                var rect = {
+                    x: 0,
+                    y: api.winHeight - height - 10,
+                    width: api.winWidth,
+                    height: height
+                };
+                demo.playDownloadUrl({
+                    url: m3u8Array[text],
+                    rect: rect
+                }, function (ret, err) {
+                    alert(JSON.stringify(ret));
+                })
+            } else {
+                alert('没有此项')
+            }
+        });
+    }
+
+
+    function apiready() {
+        var header = document.getElementById('header');
+        header.style.paddingTop = api.safeArea.top + 'px';
+
+        api.removeLaunchView();
+    }
+</script>
+</html>
+

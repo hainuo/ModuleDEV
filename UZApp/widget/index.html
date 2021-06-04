@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Module Develop</title>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+  <style type="text/css">
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      background-color: #fff;
+      margin: 0;
+    }
+
+    #wrap {
+      height: 100%;
+      position: relative;
+    }
+
+    #header {
+      background-color: #5082c2;
+      height: 44px;
+      position: relative;
+    }
+
+    #header h1 {
+      font-size: 20px;
+      height: 44px;
+      line-height: 44px;
+      margin: 0em;
+      color: #fff;
+      margin-left: 100px;
+      margin-right: 100px;
+      text-align: center;
+    }
+
+    #main {
+      display: block;
+    }
+
+    a.button {
+      display: -webkit-box;
+      -webkit-box-pack: center;
+      -webkit-box-align: center;
+      height: 36px;
+      margin: 8px;
+      background-color: rgba(240, 240, 240, 1);
+      border-color: rgba(220, 220, 220, 1);
+      border-width: 2px;
+      border-style: solid;
+    }
+
+    a.active {
+      background-color: rgba(240, 240, 240, 0.6);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrap">
+    <header id="header">
+      <h1 id="title">模块开发</h1>
+    </header>
+    <div id="main">
+      <a class="button" tapmode="active" onclick="hengping()">横屏</a>
+      <a class="button" tapmode="active" onclick="shuping()">竖屏</a>
+      <a class="button" tapmode="active" onclick="openDlna()">DLNA</a>
+      <a class="button" tapmode="active" onclick="openAdModule()">广告模块</a>
+      <a class="button" tapmode="active" onclick="openCache()">下载</a>
+      <a class="button" tapmode="active" onclick="doPlay()">播放</a>
+      
+      <a class="button" tapmode="active" onclick="doToggleScreen()">全屏 10秒后退出全屏 </a>
+      
+      <a class="button" tapmode="active" onclick="getVodScreenStatus()">获取视频全屏状态</a>
+      <a class="button" tapmode="active" onclick="doPause()">暂停</a>
+      <a class="button" tapmode="active" onclick="doResumePlay()">恢复播放</a>
+      <a class="button" tapmode="active" onclick="doSeekTimeTo()">跳转时间</a>
+      <a class="button" tapmode="active" onclick="doStopNoLoading()">停止并移除播放器</a>
+      <a class="button" tapmode="active" onclick="doStopWithLoading()">停止显示loading</a>
+      <a class="button" tapmode="active" onclick="doShowLoading()">预加载loading</a>
+      <a class="button" tapmode="active" onclick="proxyCheck()">异步方法测试代理</a>
+      <a class="button" tapmode="active" onclick="proxyCheckSync()">同步方法测试代理</a>
+    </div>
+  </div>
+</body>
+<script src="./script/api.js"></script>
+<script>
+  var isLandscape = false;
+  function openDlna() {
+    let demo = api.require("hnMediaPlayer");
+    var status = demo.stop();
+    // alert(JSON.stringify(status));
+    api.openTabLayout({
+      name: "dlna",
+      url: "widget://dlna.html",
+      title: "DLNA",
+      hideNavigationBar: false,
+    });
+  }
+    function openAdModule() {
+      let demo = api.require("hnMediaPlayer");
+      var status = demo.stop();
+      // alert(JSON.stringify(status));
+      api.openTabLayout({
+        name: "dlna",
+        url: "widget://admodule.html",
+        title: "DLNA",
+        hideNavigationBar: false,
+      });
+    }
+  function openCache() {
+    let demo = api.require("hnMediaPlayer");
+    var status = demo.stop();
+    // alert(JSON.stringify(status));
+    api.openTabLayout({
+      name: "cache",
+      url: "widget://cache.html",
+      title: "下载",
+      hideNavigationBar: false,
+    });
+  }
+  function proxyCheckSync() {
+    let demo = api.require("hnProxyCheck");
+    var status = demo.proxyCheckSync();
+    console.log(JSON.stringify(status));
+    var msg = "当前代理状态 ：" + status;
+    api.toast({
+      msg: msg,
+      location: "middle",
+    });
+  }
+  function proxyCheck() {
+    let demo = api.require("hnProxyCheck");
+    demo.proxyCheck(function (ret, err) {
+      console.log(JSON.stringify(ret));
+      alert("ret " + JSON.stringify(ret));
+    });
+  }
+  function apiready() {
+    var header = document.getElementById("header");
+    header.style.paddingTop = api.safeArea.top + "px";
+    var dlnamodel = api.require("hnDlna");
+    var playdemo = api.require("hnMediaPlayer");
+    playdemo.init();
+    api.removeLaunchView();
+    api.addEventListener({ name: "failLoadUrl" }, function (ret) {
+      alert(JSON.stringify(ret));
+    });
+    api.addEventListener({ name: "hnPlayEvent" }, function (ret) {
+      console.log("playEvent ",JSON.stringify(ret));
+      if(ret.value.type=='seekTimeStatus'){
+        alert(JSON.stringify(ret));
+      }
+    });
+    api.addEventListener({name:"hnPlaybackStatusEvent"},function(ret){
+        alert(JSON.stringify(ret));
+    })
+    api.addEventListener(
+      {
+        name: "nextPlay",
+      },
+      function (ret) {
+        
+        alert('  - - - -'+JSON.stringify(ret));
+    
+        
+        
+        setTimeout(function () {
+            playdemo.toggleFullScreen(function(ret){
+                alert(JSON.stringify(ret));
+            });
+            
+            
+          var url = "https://www.mgtv.com/b/315621/3945148.html";
+          var vod_id = "127246";
+          var index = 11;
+          api.ajax(
+            {
+              url:
+                "http://id.sankof.space/app.php/jiexi/parseUrlNew?from=mgtv&vod_id=" +
+                vod_id +
+                "&url=" +
+                encodeURI(url) +
+                "&index=" +
+                index +
+                "&system_type=ios",
+            },
+            function (ret, err) {
+              api.hideProgress();
+              alert(JSON.stringify(ret));
+              if (ret.url) {
+                play(ret.url, title, "mgtv");
+              }
+            }
+          );
+        }, 3000);
+      }
+    );
+  }
+
+    function doToggleScreen(){
+        var playdemo = api.require('hnMediaPlayer');
+        playdemo.toggleFullScreen(function(ret){
+            console.log('10s后退出全屏'+JSON.stringify(ret));
+            setTimeout(function(){
+                playdemo.toggleFullScreen(function(ret){
+                    
+                        console.log('退出全屏le '+JSON.stringify(ret));
+                })
+            },10000);
+        });
+    }
+    function doResumePlay(){
+        var playdemo = api.require('hnMediaPlayer');
+        var ret = playdemo.resumePlay();
+        alert(JSON.stringify(ret));
+    }
+    function getVodScreenStatus(){
+        var playdemo = api.require('hnMediaPlayer');
+        var ret = playdemo.isFullScreen();
+        alert(JSON.stringify(ret));
+            playdemo.toggleFullScreen(function(ret){
+                
+                    console.log('退出全屏le '+JSON.stringify(ret));
+                    
+                    setTimeout(function(){
+                    rets = playdemo.isFullScreen();
+                    alert(JSON.stringify(rets));
+                    
+                },3000);
+            })
+    }
+  function doPlay() {
+
+    //返回值   code =1 成功 -1 或者0都是失败
+    // type 在code为1或者-1时存在 playing 播放中  paused 暂停中 finished 播放结束 played 已播放
+    //   alert(isLandscape);
+    //   var url = "https://video-1256548950.cos.ap-beijing.myqcloud.com/00088.m3u8";
+    //   var url = "https://cdn.jsdelivr.net/gh/Zrahh/JsDelivr_CDN/cache/紧急救援.m3u8";
+    api.toast({
+      msg: "正在播放m3u8",
+    });
+    api.actionSheet(
+      {
+        title: "播放测试",
+        buttons: [
+          "789",
+          "alizy",
+          "普通",
+          "mgtv",
+          "bilibili",
+          "4kdym",
+          "失效链接",
+          "languang",
+          "languang2",
+          "789 跳到20分钟",
+          "789 倍速2.0"
+        ],
+      },
+      function (ret, err) {
+        var index = ret.buttonIndex;
+        switch (index) {
+          case 1: //789
+            var title = "刘老根4第五集";
+            api.showProgress();
+            api.ajax(
+              {
+                url: "http://v.lyys.space/ffjxy/?url=刘老根4第05集",
+              },
+              function (ret, err) {
+                api.hideProgress();
+                alert(JSON.stringify(ret));
+                if (ret.url) {
+                  play(ret.url, title);
+                }
+              }
+            );
+            break;
+          case 2: //alizy
+            var url =
+              "https://jx.cqzyw.net:8655/analysis/index/?uid=43&token=aciqsuwAGHRUVWXY49&down=200&url=alizy-1619933539";
+            var title = "刘老根4第4集";
+            play(url, title);
+            break;
+          case 3:
+            var url =
+              "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8";
+            var title = "测试地址";
+            play(url, title);
+            break;
+          case 4: //mgtv
+            var url = "https://www.mgtv.com/b/344620/11685423.html";
+            var vod_id = "119117";
+            var title = "陪你一起长大";
+
+            var index = 33;
+            api.ajax(
+              {
+                url:
+                  "http://id.sankof.space/app.php/jiexi/parseUrlNew?from=mgtv&vod_id=" +
+                  vod_id +
+                  "&url=" +
+                  encodeURI(url) +
+                  "&index=" +
+                  index +
+                  "&system_type=ios",
+              },
+              function (ret, err) {
+                api.hideProgress();
+                alert(JSON.stringify(ret));
+                if (ret.url) {
+                  play(ret.url, title, "mgtv");
+                }
+              }
+            );
+            break;
+          case 5: //bilibili
+            var url = "https://www.bilibili.com/bangumi/play/ep374636";
+            var vod_id = "115554";
+            var index = 15;
+            api.ajax(
+              {
+                url:
+                  "http://id.sankof.space/app.php/jiexi/parseUrlNew?from=bilibili&vod_id=" +
+                  vod_id +
+                  "&url=" +
+                  encodeURI(url) +
+                  "&index=" +
+                  index +
+                  "&system_type=ios",
+              },
+              function (ret, err) {
+                api.hideProgress();
+                alert(JSON.stringify(ret));
+                if (ret.url) {
+                  play(ret.url, title, "bilibili");
+                }
+              }
+            );
+            break;
+          case 6: //大姨妈
+            // var url = "https://4kpan.4kyima.com/directlink/10/御赐小仵作/11.mp4";
+            var url = "https://4kpan.4kyima.com/directlink/10/%E5%BE%A1%E8%B5%90%E5%B0%8F%E4%BB%B5%E4%BD%9C/11.mp4";
+            var title = "超级的我";
+            play(url, title);
+            break;
+          case 7: //失效连接
+            var url = "https://4kpan.4kyima.com/s/s9ztas";
+            var title = "余罪第一季第7集";
+            play(url, title);
+            break;
+            case 8://languang
+            var url = "ml5dWFuJnNhb2hlacK3anVlemhhblRD";
+            var vod_id = "129519";
+            var index = 0;
+            api.ajax(
+              {
+                url:
+                  "http://id.sankof.space/app.php/jiexi/parseUrlNew?from=languang&vod_id=" +
+                  vod_id +
+                  "&url=" +
+                  encodeURI(url) +
+                  "&index=" +
+                  index +
+                  "&system_type=ios",
+              },
+              function (ret, err) {
+                api.hideProgress();
+                alert(JSON.stringify(ret));
+                if (ret.url) {
+                  play(ret.url, title);
+                }
+              }
+            );
+            break;
+            case 9://languang2
+            var url = "NITTZMeTkyTG1oNlkyaDFiR2t1ZEc5d0wzTXZaek5GUjFsamJTOHdNUzV0Y0RRPQ";
+            var vod_id = "129457";
+            var index = 0;
+            api.ajax(
+              {
+                url:
+                  "http://id.sankof.space/app.php/jiexi/parseUrlNew?from=languang2&vod_id=" +
+                  vod_id +
+                  "&url=" +
+                  encodeURI(url) +
+                  "&index=" +
+                  index +
+                  "&system_type=ios",
+              },
+              function (ret, err) {
+                api.hideProgress();
+                alert(JSON.stringify(ret));
+                if (ret.url) {
+                  play(ret.url, title);
+                }
+              }
+            );
+            break;
+            case 10: //789 跳到指定时间
+            var title = "刘老根4第五集";
+            api.showProgress();
+            api.ajax(
+              {
+                url: "http://v.lyys.space/ffjxy/?url=刘老根4第05集",
+              },
+              function (ret, err) {
+                api.hideProgress();
+                alert(JSON.stringify(ret));
+                if (ret.url) {
+                  play(ret.url, title,false,1200);
+                }
+              }
+            );
+            break;
+            case 11: //789 3倍速播放
+            var title = "灵笼特别篇";
+            api.showProgress();
+            api.ajax(
+              {
+                url: "http://id.sankof.space/ffjxy/?url=灵笼特别篇",
+              },
+              function (ret, err) {
+                api.hideProgress();
+                alert(JSON.stringify(ret));
+                if (ret.url) {
+                  play(ret.url, title,false,false,2.3);
+                }
+              }
+            );
+            break;
+        }
+      }
+    );
+  }
+  function doShowLoading(){
+    play("file://" + api.wgtRootDir + "/sange.mp4",'loading');
+  }
+  function play(url, title, type,seekTimeTo,rate) {
+    url = decodeURI(url);
+    console.log(url);
+    url = encodeURI(url);
+    console.log(url);
+
+    let demo = api.require("hnMediaPlayer");
+    var rect = {
+      x: 0,
+      y: 50,
+      width: 320,
+      height: 180,
+    };
+
+    var data = {
+      title: title,
+      url: url,
+      preUrl: "file://" + api.wgtRootDir + "/sange.mp4",
+      rect: rect,
+      seekTimeTo:seekTimeTo,
+      isLandscape: isLandscape,
+      rate:rate
+    };
+    if (type == "mgtv") {
+      data.referrer = "https://www.mgtv.com";
+      data.userAgent =
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36 Edg/89.0.774.77";
+    }
+    if (type == "bilibili") {
+      data.headers =
+        "referer:https://www.bilibili.com/\r\nuser-agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36\r\n";
+    }
+    demo.play(data, function (ret, err) {
+      if (ret) {
+        console.log("播放状态返回 " + JSON.stringify(ret));
+      }
+    });
+  }
+  function doSeekTimeTo() {
+    var playdemo = api.require("hnMediaPlayer");
+      api.prompt({
+          title:'请输入要跳转的播放时间',
+          buttons: ['确定', '取消']
+      }, function(ret, err) {
+          var index = ret.buttonIndex;
+          var text = ret.text;
+          var num = parseInt(text);
+          if(isNaN(num)){
+            alert('请输入正确的时间，一般为正整数');
+            return;
+          }
+          playdemo.seekTimeTo({seekTimeTo:num},function(ret){
+            alert(JSON.stringify(ret));
+          });
+      });
+  }
+  function doPause() {
+    var playdemo = api.require("hnMediaPlayer");
+    var ret = playdemo.pause();
+    alert(JSON.stringify(ret));
+  }
+  function doStopNoLoading() {
+    var playdemo = api.require("hnMediaPlayer");
+    playdemo.stop(function (ret) {
+      alert(JSON.stringify(ret));
+    });
+  }
+  function doStopWithLoading() {
+    var playdemo = api.require("hnMediaPlayer");
+    playdemo.stop({ showLoading: true }, function (ret) {
+      alert(JSON.stringify(ret));
+    });
+  }
+
+  function hengping() {
+    api.setScreenOrientation({
+      orientation: "auto_landscape",
+    });
+    isLandscape = true;
+  }
+  function shuping() {
+    api.setScreenOrientation({
+      orientation: "auto_portrait",
+    });
+    isLandscape = false;
+  }
+</script>
+
+</html>

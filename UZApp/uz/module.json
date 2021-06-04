@@ -1,0 +1,25 @@
+[
+	{
+		"name" : "moduleDemo",
+		"class" : "UZModuleDemo"
+	},
+	{
+		"name" : "moduleDemoSwift",
+		"class" : "UZModuleDemoSwift"
+	},
+	{
+		"name" : "hnTMob",
+		"class" : "HNTMob"
+	},
+    {
+        "name" : "hnMediaPlayer",
+        "class" : "HNMediaPlayer"
+    },
+    {
+        "name" : "hnByteDanceUnion",
+        "class" : "HNByteDanceUnion",
+        "Build Settings": {
+                "Other Linker Flags": "-l'c++abi'"
+        }
+    }
+]

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Module Develop</title>
+<meta charset="utf-8">
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+<style type="text/css">
+	html,body{
+		height: 100%
+	}
+	body{
+		background-color: #fff;
+	    margin: 0;
+	}
+	#wrap{
+	    height: 100%;
+	    position: relative;
+	}
+	#header{
+		background-color: #5082c2;
+		height: 44px;
+	    position: relative;
+	}
+	#header h1{
+	    font-size: 20px; 
+	    height: 44px; 
+	    line-height: 44px; 
+	    margin: 0em; 
+	    color: #fff;
+		margin-left: 100px;
+		margin-right: 100px;
+		text-align: center;
+	}
+    #main{
+        display: block;
+    }
+    a.button{
+        display: -webkit-box;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
+        height: 36px;
+        margin: 8px;
+        background-color: rgba(240,240,240,1.0);
+        border-color: rgba(220,220,220,1.0);
+        border-width: 2px;
+        border-style: solid;
+	}
+    a.active{
+        background-color: rgba(240,240,240,0.6);
+	}
+</style>
+</head>
+<body>
+	<div id="wrap">
+	    <header id="header">
+	    	<h1 id="title">模块开发</h1>
+	    </header>
+	    <div id="main">
+            <span class="button"> 头条 </span>
+            <a class="button" tapmode="active" onclick="initAd()">* 初始化头条 同步</a>
+            <a class="button" tapmode="active" onclick="showAlert()">开屏测试 异步</a>
+            <span class="button"> 腾讯 </span>
+            <a class="button" tapmode="active" onclick="initTMobAd()">* 初始化 同步</a>
+            <a class="button" tapmode="active" onclick="loadTMobFullSplashAd()">开屏全屏加载 异步</a>
+            <a class="button" tapmode="active" onclick="showTMobFullSplashAd()">开屏全屏显示 同步</a>
+<!--            <a class="button" tapmode="active" onclick="showTMobFullSplashAd()">开屏全屏显示LOGO 同步</a>-->
+            <a class="button" tapmode="active" onclick="loadTMobSplashAd()">开屏普通加载 异步</a>
+            <a class="button" tapmode="active" onclick="showTMobSplashAd()">开屏普通显示 同步</a>
+<!--            <a class="button" tapmode="active" onclick="showTMobSplashAd()">开屏普通显示LOGO 同步</a>-->
+            <a class="button" tapmode="active" onclick="showTMobTiepianAd()">贴片显示 异步</a>
+            <a class="button" tapmode="active" onclick="closeTMobTiepianAd()">贴片关闭 同步</a>
+            <a class="button" tapmode="active" onclick="loadTMobChapingFullAd()">插屏全屏加载 异步</a>
+            <a class="button" tapmode="active" onclick="showTMobChapingFullAd()">插屏全屏展示 异步</a>
+            
+            <a class="button" tapmode="active" onclick="loadTMobChapingAd()">插屏普通视频加载 异步</a>
+            <a class="button" tapmode="active" onclick="showTMobChapingAd()">插屏普普通视频展示 异步</a>
+            
+            
+            
+            <a class="button" tapmode="active" onclick="loadTMobBannerAd()">banner广告加载展示 异步</a>
+            <a class="button" tapmode="active" onclick="showTMobCloseBannerAd()">banner广告关闭 异步</a>
+            
+            
+            <a class="button" tapmode="active" onclick="loadTMobNativeExpressAd()">加载信息流广告 异步</a>
+            <a class="button" tapmode="active" onclick="closeTMobNativeExpressAd()">关闭信息流广告 异步</a>
+
+            
+            
+            
+            <span class="button"> ADSet </span>
+            <a class="button" tapmode="active" onclick="initADSet()">* 初始化 同步</a>
+            
+            <a class="button" tapmode="active" onclick="checkADSet()">*检查初始化结果 同步</a>
+            
+            <a class="button" tapmode="active" onclick="showADSetSplashAd()">开屏无logo</a>
+            <a class="button" tapmode="active" onclick="showADSetSplashAdWithLogo()">开屏有logo</a>
+            
+        </div>
+    </div>
+</body>
+<script>
+    var demo,initResult,initTMobAdResult,initADSetResult;
+    function initAd(){
+        demo = api.require('hnByteDanceUnion');
+        initResult = demo.init({
+            appId:5158076
+        });
+        //会提示当前SDK版本号
+        alert(JSON.stringify(initResult));
+    }
+function showAlert() {
+    if(initResult && initResult.code == 1){
+        demo.addSplashAd({adId:887456814,ret:{x:0,y:0,width:api.winWidth,height:api.winHeight}},function(ret){
+            alert(JSON.stringify(ret));
+        })
+    }else{
+        alert('请先初始化');
+    }
+
+}
+function initTMobAd(){
+    demo = api.require('hnTMob');
+    initTMobAdResult = demo.init({
+        appId:'1111118178'
+    });
+    //会提示当前SDK版本号
+    console.log(JSON.stringify(initTMobAdResult));
+    alert(JSON.stringify(initTMobAdResult));
+}
+
+function loadTMobFullSplashAd() {
+    if(initTMobAdResult && initTMobAdResult.code == 1){
+        demo.loadSplashAd({adId:'8021135775129139',isFullAd:true},function(ret){
+            if(!ret.time || (ret.time && ret.time<1)){
+                alert(JSON.stringify(ret));
+            }
+            
+            // ret {"code":1,"splashAdType":self.splashAdType,"eventType":"doShow","msg":"开屏广告展示命令成功！"}
+            // code 为1  表示成功  为0 表示失败
+            // splashAdTyp  loadSplashAd    showSplashAd
+            // enterBackground 加载了广告之后 应用进入后台
+            // loadSplashAd 时 eventType doLoad 加载命令执行成功。adLoadFailed 广告素材加载失败。 adLoaded 广告素材加载成功。 
+            // showSplashAd 时 eventType doShow 显示命令命令成功。adShowFailed 展示失败。 isPresented 展示成功。 adShowed 被用户看到，曝光了。 countdown 倒计时（注意这个时候回包含 time 字段）。 adClicked 开屏广告被点击了。 adWillClose 开屏广告即将关闭。 adClosed 开屏广告 关闭了。 adPageWillShow 广告之后的全屏广告页面即将展示。 adPageShowed 广告之后的全屏广告页面展示了。 adPageWillClosed 广告之后的全屏广告页面即将关闭。 adPageClosed 广告之后的全屏广告页面关闭了。
+        })
+    }else{
+        alert('请先初始化');
+    }
+
+}
+function showTMobFullSplashAd() {
+    if(initTMobAdResult && initTMobAdResult.code == 1){
+        let ret = demo.showSplashAd({isFullAd:true});
+            alert(JSON.stringify(ret));
+    }else{
+        alert('请先初始化');
+    }
+
+}
+function loadTMobSplashAd(){
+    if(initTMobAdResult && initTMobAdResult.code == 1){
+        demo.loadSplashAd({adId:'8021135775129139',isFullAd:false},function(ret){
+            if(!ret.time || (ret.time && ret.time<1)){
+                alert(JSON.stringify(ret));
+            }
+        })
+    }else{
+        alert('请先初始化');
+    }
+}
+function showTMobSplashAd() {
+    if(initTMobAdResult && initTMobAdResult.code == 1){
+        let ret = demo.showSplashAd({isFullAd:false});
+       
+        alert(JSON.stringify(ret));
+    
+        
+    }else{
+        alert('请先初始化');
+    }
+
+}
+function showTMobTiepianAd(){
+    demo = api.require('hnTMob');
+    initTMobAdResult = demo.init({
+        appId:'1111118178'
+    });
+    if(initTMobAdResult && initTMobAdResult.code == 1){
+        demo.showUnifiedNativeAd({
+            adId:'5061087188578569',
+            rect:{
+              x:0,
+              y:api.safeArea.top,
+              width:api.winWidth,
+              height:api.winWidth/16.0 * 9,
+              //marginLeft:0,    //相对父页面左外边距的距离，数字类型
+             // marginTop:api.safeArea.top,     //相对父页面上外边距的距离，数字类型
+              //marginBottom: api.winHeight - api.safeArea.top - api.safeArea.bottom - (api.winWidth/16.0 * 9),  //相对父页面下外边距的距离，数字类型
+              //marginRight:0    //相对父页面右外边距的距离，数字类型
+            },
+          fixedOn:"",
+          fixed:true,
+            
+        },function(ret){
+            
+            console.log(JSON.stringify(ret));
+            if(!ret.time || (ret.time && ret.time<1)){
+               // alert(JSON.stringify(ret));
+            }
+        })
+    }else{
+        alert('请先初始化');
+    }
+}
+    function closeTMobTiepianAd() {
+        if(initTMobAdResult && initTMobAdResult.code == 1){
+            let ret = demo.closeUnifiedNativeAd();
+           
+            alert(JSON.stringify(ret));
+        
+            
+        }else{
+            alert('请先初始化');
+        }
+
+    }
+    //优量汇 插屏 ID 8091996102333638 
+    function loadTMobChapingFullAd(){
+        if(initTMobAdResult && initTMobAdResult.code == 1){
+            demo.loadUnifiedInterstitialAd({adId:'8091996102333638',isFullAd:true},function(ret){
+                    alert(JSON.stringify(ret));
+            })
+        }else{
+            alert('请先初始化');
+        }
+    }
+    function showTMobChapingFullAd() {
+        if(initTMobAdResult && initTMobAdResult.code == 1){
+            let ret = demo.showUnifiedInterstitialAd({isFullAd:true});
+            alert(JSON.stringify(ret));
+        }else{
+            alert('请先初始化');
+        }
+
+    }
+    //优量汇 插屏 ID 8091996102333638
+    function loadTMobChapingAd(){
+        if(initTMobAdResult && initTMobAdResult.code == 1){
+            demo.loadUnifiedInterstitialAd({adId:'8091996102333638',isFullAd:false},function(ret){
+                    alert(JSON.stringify(ret));
+                    
+            })
+        }else{
+            alert('请先初始化');
+        }
+    }
+    function showTMobChapingAd() {
+        if(initTMobAdResult && initTMobAdResult.code == 1){
+            let ret = demo.showUnifiedInterstitialAd({isFullAd:false});
+            alert(JSON.stringify(ret));
+        }else{
+            alert('请先初始化');
+        }
+
+    }
+    
+    
+    function loadTMobBannerAd(){
+        if(initTMobAdResult && initTMobAdResult.code == 1){
+            demo.loadBannerAd(
+            {
+                adId:'3031593188813246',
+                animationSwitch:true,//是否要动画
+                refreshInterval: 30,// 是否自动切换 0表示不自动切换。30-120秒表示 自动切换的事件范围 如果自动切换小于30s会自动转换成30秒 大于120秒会自动转换成120秒
+                ret:{
+                    x:0,
+                    y:api.safeArea.top,
+                    width:api.winWidth,
+                    height:100,
+                }, //ret 可以不传 默认 0，0，375，100;
+                
+            },
+            function(ret){
+                    alert(JSON.stringify(ret));
+            })
+        }else{
+            alert('请先初始化');
+        }
+    }
+    
+    
+    function showTMobCloseBannerAd(){
+        if(initTMobAdResult && initTMobAdResult.code == 1){
+            demo.closeBannerAd(
+            function(ret){
+                    alert(JSON.stringify(ret));
+            })
+        }else{
+            alert('请先初始化');
+        }
+    }
+    
+    
+    function loadTMobNativeExpressAd(){
+        if(initTMobAdResult && initTMobAdResult.code == 1){
+            demo.loadNativeExpressAd(
+            {
+                adId: '3091893205385228', //平台模版 横版纯图片 只展示视频
+                x:0,
+                y:300,
+                width:414,
+                height:50,
+                fixed:true
+            
+            },
+            function(ret){
+                    alert(JSON.stringify(ret));
+            })
+        }else{
+            alert('请先初始化');
+        }
+    }
+    
+    function closeTMobNativeExpressAd(){
+        if(initTMobAdResult && initTMobAdResult.code == 1){
+            demo.closeNativeExpressAd(
+            function(ret){
+                    alert(JSON.stringify(ret));
+            })
+        }else{
+            alert('请先初始化');
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    function initADSet(){
+        demo = api.require('hnADSet');
+        var initADSetDoResult = demo.init({
+            appId:"83EB8350DEFF9958"
+        });
+        //会提示当前SDK版本号
+        alert(JSON.stringify(initADSetDoResult));
+    }
+    function checkADSet(){
+        alert('本操作在初始化之后使用，一般要延迟1s中 以确保在系统中成功注册appKey');
+        demo = api.require('hnADSet');
+        initADSetResult = demo.checkInit();
+        //会提示当前SDK版本号
+        alert(JSON.stringify(initADSetResult));
+    }
+    function showADSetSplashAd(){
+        if(initADSetResult && initADSetResult.code == 1){
+            demo.loadSplashAd({adId:'6B0E7846F9BB0827BAF97D00FAA156BC'},function(ret){
+                
+                    alert(JSON.stringify(ret));
+                    // addLoaded 加载成功 adFailed 加载失败
+            })
+        }else{
+            alert('请先初始化');
+        }
+    }
+    
+    function showADSetSplashAdWithLogo(){
+        if(initADSetResult && initADSetResult.code == 1){
+            demo.loadSplashAd({adId:'6B0E7846F9BB0827BAF97D00FAA156BC',logoPath:"widget://bottomview.png"},function(ret){
+                    alert(JSON.stringify(ret));
+            })
+        }else{
+            alert('请先初始化');
+        }
+    }
+    
+function getSystemVersion() {
+    var demo = api.require('moduleDemo');
+    var version = demo.systemVersion();
+    var msg = '系统版本是：' + version;
+    api.toast({
+        msg: msg,
+        location: 'middle'
+    });
+}
+
+function apiready() {
+    var header = document.getElementById('header');
+    header.style.paddingTop = api.safeArea.top + 'px';
+    
+    api.removeLaunchView();
+    api.addEventListener({
+        name: 'clickBackButton'
+    }, function(ret, err) {
+        alert(JSON.stringify(ret));
+    });
+}
+</script>
+</html>

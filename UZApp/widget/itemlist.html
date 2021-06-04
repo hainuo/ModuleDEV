@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Module Develop</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <style type="text/css">
+        html, body {
+            height: 100%
+        }
+
+        body {
+            background-color: #ffffff;
+            margin: 0;
+        }
+
+        #wrap {
+            height: 100%;
+            position: relative;
+        }
+
+        #header {
+            background-color: #5082c2;
+            height: 44px;
+            position: relative;
+        }
+
+        #header h1 {
+            font-size: 20px;
+            height: 44px;
+            line-height: 44px;
+            margin: 0em;
+            color: #fff;
+            width: 100%;
+            text-align: center;
+        }
+
+        #main {
+            display: block;
+            height: 50%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border: 1px solid red;
+        }
+        #main2{
+            text-align: center;
+            padding: 10px;
+        }
+        .list{
+            text-align: center;
+            margin: 5px auto;
+            padding: 5px;
+            background-color: darkgrey;
+        }
+        a.button {
+            height: 36px;
+            margin: 8px;
+            padding: 5px;
+            background-color: rgba(240, 240, 240, 1.0);
+            border-color: rgba(220, 220, 220, 1.0);
+            border-width: 2px;
+            border-style: solid;
+        }
+
+        a.active {
+            background-color: rgba(240, 240, 240, 0.6);
+        }
+    </style>
+</head>
+<body>
+<div id="wrap">
+    <header id="header">
+        <h1 id="title">剧集列表</h1>
+    </header>
+    <div id="main">
+<!--        <div class="list">-->
+<!--            <span>sdd</span>-->
+<!--            <button>sdd</button>-->
+<!--            <button>sdd</button>-->
+<!--            <button>sdd</button>-->
+<!--            <button>sdd</button>-->
+<!--            <button>sdd</button>-->
+<!--        </div>-->
+    </div>
+    <div id="main2">
+        <a class="button" tapmode="active" onclick="next()">获取下一页</a>
+    </div>
+</div>
+</body>
+<script>
+    var page = 1;
+    var pageNum = 5;
+    var video;
+
+    function getItemList(video) {
+        var demo = api.require("hnMediaPlayer");
+        // alert(video.vod_id);
+        var ret = demo.getVideoItemList({page: page, num: pageNum, vod_id: video.vod_id});
+        console.log("itemList" + JSON.stringify(ret));
+        if (ret.code == 1) {
+            var dom1 = document.querySelector("#main");
+            ret.data.map(function (item) {
+                console.log(JSON.stringify(item));
+                // alert(JSON.stringify(item));
+                var newNode = document.createElement("div");
+                newNode.className = "list";
+
+
+                var domspan = document.createElement('span');
+                domspan.style.display="block";
+                domspan.style.marginBottom="5px";
+                var html = "电影ID" + item.vod_id + " [ " + item.key+ "status:"+item.status;
+                switch (item.status) {
+                    case "5":
+                        html += " 暂停中 进度" + (item.progress * 100).toFixed(2) + "%";
+                        break;
+                    case "4":
+                        html += " 缓存失败";
+                        break;
+                    case "3":
+                        html += " 已完成";
+                        break;
+                    case "2":
+                        html += " 缓存中  进度" + (item.progress * 100).toFixed(2) + "%";
+                        break;
+                    case "6":
+                    case "1":
+                    case "0":
+                        html +=" 待缓存";
+                        break;
+                        default:
+                            html+=" 默认";
+                            break;
+                }
+                html += "]";
+                domspan.innerText = html;
+                newNode.appendChild(domspan);
+
+                var domButton = document.createElement('a');
+                domButton.innerText="播放";
+                domButton.className="button";
+                domButton.setAttribute('tapmode', 'active');
+                domButton.addEventListener('click', function () {
+                    playUrl(item)
+                });
+                newNode.appendChild(domButton);
+
+                domButton = document.createElement('a');
+                domButton.innerText="暂停";
+                domButton.className="button";
+                domButton.setAttribute('tapmode', 'active');
+                domButton.addEventListener('click', function () {
+                    zanting(item)
+                });
+                newNode.appendChild(domButton);
+
+                domButton = document.createElement('a');
+                domButton.className="button";
+                domButton.innerText="恢复";
+                domButton.setAttribute('tapmode', 'active');
+                domButton.addEventListener('click', function () {
+                    huifu(item)
+                });
+                newNode.appendChild(domButton);
+
+                domButton = document.createElement('a');
+                domButton.className="button";
+                domButton.innerText="移除";
+                domButton.setAttribute('tapmode', 'active');
+                domButton.addEventListener('click', function () {
+                    yichu(item)
+                });
+                newNode.appendChild(domButton);
+
+                dom1.appendChild(newNode);
+            })
+            if (ret.data.length > 0) {
+                page++;
+            }
+        }
+    }
+
+    function playUrl(item) {
+        // alert(JSON.stringify(item));
+        let demo = api.require('hnMediaPlayer');
+        var height = (api.winWidth * 9) / 16;
+        var rect = {
+            x: 0,
+            y: api.winHeight - height - 10,
+            width: api.winWidth,
+            height: height
+        };
+        demo.playDownloadUrl({
+            url: item.url,
+            rect: rect
+        }, function (ret, err) {
+            alert(JSON.stringify(ret));
+        })
+
+    }
+
+    function next() {
+        getItemList(video);
+    }
+
+    function zanting(item){
+        let demo = api.require('hnMediaPlayer');
+       var ret = demo.pauseDownloadUrl({url:item.url});
+       alert(JSON.stringify(ret));
+    }
+
+    function huifu(item){
+        let demo = api.require('hnMediaPlayer');
+        var ret = demo.resumeDownUrl({url:item.url});
+        alert(JSON.stringify(ret));
+    }
+
+    function yichu(item){
+        let demo = api.require('hnMediaPlayer');
+        var ret = demo.deleteDownloadUrl({ids:[item.id]});
+        alert(JSON.stringify(ret));
+    }
+
+    function apiready() {
+        var header = document.getElementById('header');
+        header.style.paddingTop = api.safeArea.top + 'px';
+        var pageparam = api.pageParam;
+        video = pageparam.video;
+        if (video) {
+            var title = document.getElementById('title');
+            title.innerText = video.vod_name + "[ vod_id:"+video.vod_id+" ]  下剧集列表";
+            getItemList(video);
+        } else {
+            api.alert({
+                title: '参数有误',
+                msg: '没有获取到video信息',
+            }, function (ret, err) {
+                api.closeWin();
+            });
+        }
+    }
+</script>
+</html>
+
