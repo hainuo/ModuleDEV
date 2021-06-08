@@ -104,7 +104,6 @@
 		FCB69B12266A21F3001F90D0 /* BUFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB69B0F266A21F2001F90D0 /* BUFoundation.framework */; };
 		FCB69B14266A2216001F90D0 /* BUAdSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FCB69B13266A2216001F90D0 /* BUAdSDK.bundle */; };
 		FCB69B16266A2273001F90D0 /* libc++abi.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB69B15266A2273001F90D0 /* libc++abi.tbd */; };
-		FCCA4B972668A19500D6447D /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = FCCA4B962668A19500D6447D /* back.png */; };
 		FCD9FBCB26661D1D003D6256 /* libHNTMob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCD9FBCA26661D02003D6256 /* libHNTMob.a */; };
 /* End PBXBuildFile section */
 
@@ -294,7 +293,6 @@
 		FCB69B0F266A21F2001F90D0 /* BUFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BUFoundation.framework; sourceTree = "<group>"; };
 		FCB69B13266A2216001F90D0 /* BUAdSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = BUAdSDK.bundle; sourceTree = "<group>"; };
 		FCB69B15266A2273001F90D0 /* libc++abi.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++abi.tbd"; path = "usr/lib/libc++abi.tbd"; sourceTree = SDKROOT; };
-		FCCA4B962668A19500D6447D /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		FCD9FBC526661D02003D6256 /* HNTMob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = HNTMob.xcodeproj; path = ../../../HNTMob/HNTMob.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -455,7 +453,6 @@
 		527BCF6E19C431480077631F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				FCCA4B922668A16900D6447D /* res_HNTMob */,
 				5204B6182154A55600306B1E /* Launch Screen.storyboard */,
 				5204B6362154AFCD00306B1E /* localization */,
 				527BCFF319C4346B0077631F /* uz */,
@@ -611,14 +608,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FCCA4B922668A16900D6447D /* res_HNTMob */ = {
-			isa = PBXGroup;
-			children = (
-				FCCA4B962668A19500D6447D /* back.png */,
-			);
-			path = res_HNTMob;
-			sourceTree = "<group>";
-		};
 		FCD9FBC626661D02003D6256 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -760,7 +749,6 @@
 				527BCFF519C4346B0077631F /* uz in Resources */,
 				FCB69B14266A2216001F90D0 /* BUAdSDK.bundle in Resources */,
 				527BCFF619C4346B0077631F /* widget in Resources */,
-				FCCA4B972668A19500D6447D /* back.png in Resources */,
 				5204B6192154A55600306B1E /* Launch Screen.storyboard in Resources */,
 				FC5BE5732668DC9A00A874E0 /* SJBaseVideoPlayerResources.bundle in Resources */,
 				FC5BE5792668DC9A00A874E0 /* SJVideoPlayer.bundle in Resources */,

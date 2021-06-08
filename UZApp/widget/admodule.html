@@ -103,14 +103,14 @@
     function initAd(){
         demo = api.require('hnByteDanceUnion');
         initResult = demo.init({
-            appId:5158076
+            appId:5145104
         });
         //会提示当前SDK版本号
         alert(JSON.stringify(initResult));
     }
 function showAlert() {
     if(initResult && initResult.code == 1){
-        demo.addSplashAd({adId:887456814,ret:{x:0,y:0,width:api.winWidth,height:api.winHeight}},function(ret){
+        demo.addSplashAd({adId:887450449,ret:{x:0,y:0,width:api.winWidth,height:api.winHeight}},function(ret){
             alert(JSON.stringify(ret));
         })
     }else{
@@ -187,6 +187,9 @@ function showTMobTiepianAd(){
     if(initTMobAdResult && initTMobAdResult.code == 1){
         demo.showUnifiedNativeAd({
             adId:'5061087188578569',
+            videoMuted:false,
+            detailPageVideoMuted:true,
+            userControlEnable:false,
             rect:{
               x:0,
               y:api.safeArea.top,

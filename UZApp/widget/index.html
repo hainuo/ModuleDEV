@@ -158,7 +158,7 @@
       }
     });
     api.addEventListener({name:"hnPlaybackStatusEvent"},function(ret){
-        alert(JSON.stringify(ret));
+        //alert(JSON.stringify(ret));
     })
     api.addEventListener(
       {
@@ -166,39 +166,28 @@
       },
       function (ret) {
         
-        alert('  - - - -'+JSON.stringify(ret));
-    
-        
-        
-        setTimeout(function () {
-            playdemo.toggleFullScreen(function(ret){
-                alert(JSON.stringify(ret));
-            });
-            
-            
-          var url = "https://www.mgtv.com/b/315621/3945148.html";
-          var vod_id = "127246";
-          var index = 11;
-          api.ajax(
-            {
-              url:
-                "http://id.sankof.space/app.php/jiexi/parseUrlNew?from=mgtv&vod_id=" +
-                vod_id +
-                "&url=" +
-                encodeURI(url) +
-                "&index=" +
-                index +
-                "&system_type=ios",
-            },
-            function (ret, err) {
-              api.hideProgress();
-              alert(JSON.stringify(ret));
-              if (ret.url) {
-                play(ret.url, title, "mgtv");
-              }
-            }
-          );
-        }, 3000);
+        alert('  - - 5秒后全屏 - -'+JSON.stringify(ret));
+
+         
+                 var title = "刘老根4第五集";
+                 api.showProgress();
+                 api.ajax(
+                   {
+                     url: "http://v.lyys.space/ffjxy/?url=刘老根4第05集",
+                   },
+                   function (ret, err) {
+                    
+                     api.hideProgress();
+                     alert(JSON.stringify(ret));
+                     if (ret.url) {
+                       play(ret.url, title);
+                     }else{
+                         playdemo.toggleFullScreen(function(ret){
+                             alert(JSON.stringify(ret));
+                         });
+                     }
+                   }
+                 );
       }
     );
   }
@@ -475,6 +464,9 @@
     }
     demo.play(data, function (ret, err) {
       if (ret) {
+          demo.toggleFullScreen(function(ret){
+              alert(JSON.stringify(ret));
+          });
         console.log("播放状态返回 " + JSON.stringify(ret));
       }
     });
