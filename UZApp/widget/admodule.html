@@ -59,6 +59,9 @@
             <span class="button"> 头条 </span>
             <a class="button" tapmode="active" onclick="initAd()">* 初始化头条 同步</a>
             <a class="button" tapmode="active" onclick="showAlert()">开屏测试 异步</a>
+            <a class="button" tapmode="active" onclick="showBanner()">banner开启 异步</a>
+            <a class="button" tapmode="active" onclick="showBanner2()">banner2开启 异步</a>
+            <a class="button" tapmode="active" onclick="closedBanner()">banner关闭 异步</a>
             <span class="button"> 腾讯 </span>
             <a class="button" tapmode="active" onclick="initTMobAd()">* 初始化 同步</a>
             <a class="button" tapmode="active" onclick="loadTMobFullSplashAd()">开屏全屏加载 异步</a>
@@ -118,6 +121,70 @@ function showAlert() {
     }
 
 }
+    function showBanner() {
+            demo = api.require('hnByteDanceUnion');
+            initResult = demo.init({
+                appId:5145104
+            });
+        if(initResult && initResult.code == 1){
+            demo.addBannerAd({
+                adId:946160027,
+                refreshInterval:0, //30-120s表示间隔多少秒更新一次广告  0表示关闭自动切换
+                ret:{
+                    x:0,
+                    y:api.safeArea.top + 600,
+                    width:api.winWidth,
+                    height:100
+                },
+                fixed:false,
+                fixedOn:api.frameName? api.frameName :''
+            },function(ret){
+                alert(JSON.stringify(ret));
+            })
+        }else{
+            alert('请先初始化');
+        }
+
+    }
+    function showBanner2() {
+        demo2 = api.require('hnByteDanceUnion');
+        var initResult2 = demo2.init({
+            appId:5145104
+        });
+        if(initResult2 && initResult2.code == 1){
+            demo2.addBannerAd({
+                adId:946158289,
+                refreshInterval:0, //30-120s表示间隔多少秒更新一次广告  0表示关闭自动切换
+                ret:{
+                    x:0,
+                    y:api.safeArea.top + 300,
+                    width:api.winWidth,
+                    height:100
+                },
+                fixed:false,
+                fixedOn:api.frameName? api.frameName :''
+            },function(ret){
+                alert(JSON.stringify(ret));
+            })
+        }else{
+            alert('请先初始化');
+        }
+
+    }
+    function closedBanner(){
+        if(initResult && initResult.code == 1){
+           var ret = demo.closeBannerAd();
+           alert(JSON.stringify(ret));
+        }else{
+            alert('请先初始化');
+        }
+
+    }
+    
+    
+    
+    
+    
 function initTMobAd(){
     demo = api.require('hnTMob');
     initTMobAdResult = demo.init({

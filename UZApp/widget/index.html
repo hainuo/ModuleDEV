@@ -103,8 +103,8 @@
     });
   }
     function openAdModule() {
-      let demo = api.require("hnMediaPlayer");
-      var status = demo.stop();
+      //let demo = api.require("hnMediaPlayer");
+     // var status = demo.stop();
       // alert(JSON.stringify(status));
       api.openTabLayout({
         name: "dlna",
@@ -144,9 +144,22 @@
   function apiready() {
     var header = document.getElementById("header");
     header.style.paddingTop = api.safeArea.top + "px";
-    var dlnamodel = api.require("hnDlna");
-    var playdemo = api.require("hnMediaPlayer");
-    playdemo.init();
+    
+    
+    demoPangle = api.require('hnByteDanceUnion');
+    initResult = demoPangle.init({
+        appId:5145104
+    });
+    if(initResult && initResult.code == 1){
+        demoPangle.addSplashAd({adId:887450449,ret:{x:0,y:0,width:api.winWidth,height:api.winHeight}},function(ret){
+            alert(JSON.stringify(ret));
+        })
+    }
+    
+    
+    //var dlnamodel = api.require("hnDlna");
+    //var playdemo = api.require("hnMediaPlayer");
+    //playdemo.init();
     api.removeLaunchView();
     api.addEventListener({ name: "failLoadUrl" }, function (ret) {
       alert(JSON.stringify(ret));
