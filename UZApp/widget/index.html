@@ -146,15 +146,20 @@
     header.style.paddingTop = api.safeArea.top + "px";
     
     
-    demoPangle = api.require('hnByteDanceUnion');
-    initResult = demoPangle.init({
+    var demoPangle = api.require('hnByteDanceUnion');
+    demoPangle.init({
         appId:5145104
+    },function(ret){
+        initResult = ret;
+        //会提示当前SDK版本号
+        alert(JSON.stringify(initResult));
+        if(initResult && initResult.code == 1){
+            demoPangle.addSplashAd({adId:887450449,ret:{x:0,y:0,width:api.winWidth,height:api.winHeight}},function(ret){
+                alert(JSON.stringify(ret));
+            })
+        }
     });
-    if(initResult && initResult.code == 1){
-        demoPangle.addSplashAd({adId:887450449,ret:{x:0,y:0,width:api.winWidth,height:api.winHeight}},function(ret){
-            alert(JSON.stringify(ret));
-        })
-    }
+    
     
     
     //var dlnamodel = api.require("hnDlna");
