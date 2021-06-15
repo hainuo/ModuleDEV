@@ -152,10 +152,10 @@
     },function(ret){
         initResult = ret;
         //会提示当前SDK版本号
-        alert(JSON.stringify(initResult));
+        console.log(JSON.stringify(initResult));
         if(initResult && initResult.code == 1){
-            demoPangle.addSplashAd({adId:887450449,ret:{x:0,y:0,width:api.winWidth,height:api.winHeight}},function(ret){
-                alert(JSON.stringify(ret));
+            demoPangle.addSplashAd({adId:887488873,ret:{x:0,y:0,width:api.winWidth,height:api.winHeight}},function(ret){
+                console.log(JSON.stringify(ret));
             })
         }
     });
@@ -353,6 +353,7 @@
           case 6: //大姨妈
             // var url = "https://4kpan.4kyima.com/directlink/10/御赐小仵作/11.mp4";
             var url = "https://4kpan.4kyima.com/directlink/10/%E5%BE%A1%E8%B5%90%E5%B0%8F%E4%BB%B5%E4%BD%9C/11.mp4";
+            //var url ="https://4kvip.4kyima.com/directlink/1/movie/jk/%E5%92%92%E6%80%A82-%E5%BD%95%E5%83%8F%E5%B8%A6%E7%89%88.avi";
             var title = "超级的我";
             play(url, title);
             break;
@@ -436,7 +437,7 @@
                 api.hideProgress();
                 alert(JSON.stringify(ret));
                 if (ret.url) {
-                  play(ret.url, title,false,false,2.3);
+                  play(ret.url, title,bilibili,false,2.3);
                 }
               }
             );
